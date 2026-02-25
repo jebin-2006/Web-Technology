@@ -1,0 +1,47 @@
+let donors = JSON.parse(localStorage.getItem("donors")) || [];
+
+document.getElementById("donorForm").addEventListener("submit", function(e) {
+    e.preventDefault();
+
+    let donor = {
+        name: document.getElementById("name").value,
+        age: document.getElementById("age").value,
+        blood: document.getElementById("bloodGroup").value,
+        city: document.getElementById("city").value,
+        phone: document.getElementById("phone").value
+    };
+
+    donors.push(donor);
+    localStorage.setItem("donors", JSON.stringify(donors));
+
+    alert("✅ Donor Registered Successfully!");
+
+    document.getElementById("donorForm").reset();
+});
+
+function searchDonors() {
+    let group = document.getElementById("searchGroup").value;
+    let resultsDiv = document.getElementById("results");
+
+    resultsDiv.innerHTML = "";
+
+    let filtered = donors.filter(d => d.blood === group);
+
+    if (filtered.length === 0) {
+        resultsDiv.innerHTML = "<p>No donors found.</p>";
+        return;
+    }
+
+    filtered.forEach(d => {
+        let div = document.createElement("div");
+        div.className = "resultCard";
+        div.innerHTML = `
+            <p><strong>Name:</strong> ${d.name}</p>
+            <p><strong>Blood Group:</strong> ${d.blood}</p>
+            <p><strong>City:</strong> ${d.city}</p>
+            <p><strong>Phone:</strong> ${d.phone}</p>
+            <hr>
+        `;
+        resultsDiv.appendChild(div);
+    });
+}
