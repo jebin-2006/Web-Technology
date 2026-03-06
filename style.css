@@ -1,47 +1,55 @@
-let donors = JSON.parse(localStorage.getItem("donors")) || [];
-
-document.getElementById("donorForm").addEventListener("submit", function(e) {
-    e.preventDefault();
-
-    let donor = {
-        name: document.getElementById("name").value,
-        age: document.getElementById("age").value,
-        blood: document.getElementById("bloodGroup").value,
-        city: document.getElementById("city").value,
-        phone: document.getElementById("phone").value
-    };
-
-    donors.push(donor);
-    localStorage.setItem("donors", JSON.stringify(donors));
-
-    alert("✅ Donor Registered Successfully!");
-
-    document.getElementById("donorForm").reset();
-});
-
-function searchDonors() {
-    let group = document.getElementById("searchGroup").value;
-    let resultsDiv = document.getElementById("results");
-
-    resultsDiv.innerHTML = "";
-
-    let filtered = donors.filter(d => d.blood === group);
-
-    if (filtered.length === 0) {
-        resultsDiv.innerHTML = "<p>No donors found.</p>";
-        return;
-    }
-
-    filtered.forEach(d => {
-        let div = document.createElement("div");
-        div.className = "resultCard";
-        div.innerHTML = `
-            <p><strong>Name:</strong> ${d.name}</p>
-            <p><strong>Blood Group:</strong> ${d.blood}</p>
-            <p><strong>City:</strong> ${d.city}</p>
-            <p><strong>Phone:</strong> ${d.phone}</p>
-            <hr>
-        `;
-        resultsDiv.appendChild(div);
-    });
+body{
+    font-family: 'Segoe UI', sans-serif;
+    background: linear-gradient(135deg,#ff9a9e,#fad0c4);
+    margin:0;
+}
+header{
+    background: linear-gradient(90deg,#ff416c,#ff4b2b);
+    color:white;
+    text-align:center;
+    padding:20px;
+}
+.container{
+    width:90%;
+    max-width:900px;
+    margin:auto;
+    margin-top:30px;
+}
+.card{
+    background:white;
+    padding:25px;
+    margin-bottom:25px;
+    border-radius:15px;
+    box-shadow:0 10px 25px rgba(0,0,0,0.15);
+}
+.card:hover{
+    transform:translateY(-5px);
+}
+input,select{
+    width:100%;
+    padding:12px;
+    margin-top:12px;
+    border-radius:8px;
+    border:1px solid #ccc;
+}
+button{
+    width:100%;
+    padding:12px;
+    margin-top:15px;
+    border:none;
+    border-radius:8px;
+    font-size:16px;
+    font-weight:bold;
+    color:white;
+    background:linear-gradient(90deg,#ff416c,#ff4b2b);
+    cursor:pointer;
+}
+button:hover{
+    transform:scale(1.05);
+}
+.resultCard{
+    background:linear-gradient(135deg,#89f7fe,#66a6ff);
+    padding:15px;
+    border-radius:10px;
+    margin-top:10px;
 }
