@@ -1,51 +1,50 @@
-body {
-    font-family: Arial, sans-serif;
-    background: #f4f6f9;
-    margin: 0;
-}
+let donors = JSON.parse(localStorage.getItem("donors")) || [];
+document.getElementById("donorForm").addEventListener("submit", function(e) {
+    e.preventDefault();
+    let name = document.getElementById("name").value;
+    let age = document.getElementById("age").value;
+    let blood = document.getElementById("bloodGroup").value;
+    let city = document.getElementById("city").value;
+    let phone = document.getElementById("phone").value;
+    let donor = {
+        name: name,
+        age: age,
+        blood: blood,
+        city: city,
+        phone: phone
+    };
+    donors.push(donor);
+    localStorage.setItem("donors", JSON.stringify(donors));
+    alert("✅ Registered Successfully!");
+    document.getElementById("donorForm").reset();
+});
+function searchDonors() {
+    let group = document.getElementById("searchGroup").value;
+    let resultsDiv = document.getElementById("results");
+    resultsDiv.innerHTML = "";
+    if(group === ""){
+        resultsDiv.innerHTML = "<p>Please select a blood group.</p>";
+        return;
+    }
+    let filtered = donors.filter(function(d){
+        return d.blood === group;
+    });
+    if(filtered.length === 0){
+        resultsDiv.innerHTML = "<p>❌ No donors found.</p>";
+        return;
+    }
+    filtered.forEach(function(d){
+        let div = document.createElement("div");
+        div.className = "resultCard";
+        div.innerHTML = `
+            <p><strong>Name:</strong> ${d.name}</p>
+            <p><strong>Age:</strong> ${d.age}</p>
+            <p><strong>Blood Group:</strong> ${d.blood}</p>
+            <p><strong>City:</strong> ${d.city}</p>
+            <p><strong>Phone:</strong> ${d.phone}</p>
+            <hr>
+        `;
+        resultsDiv.appendChild(div);
+    });
 
-header {
-    background: #c62828;
-    color: white;
-    text-align: center;
-    padding: 15px;
-}
-
-.container {
-    width: 90%;
-    max-width: 900px;
-    margin: auto;
-    margin-top: 20px;
-}
-
-.card {
-    background: white;
-    padding: 20px;
-    margin-bottom: 20px;
-    border-radius: 10px;
-    box-shadow: 0 0 10px rgba(0,0,0,0.1);
-}
-
-input, select, button {
-    width: 100%;
-    padding: 10px;
-    margin-top: 10px;
-    border-radius: 6px;
-    border: 1px solid #ccc;
-}
-
-button {
-    background: #c62828;
-    color: white;
-    border: none;
-    font-weight: bold;
-    cursor: pointer;
-}
-
-button:hover {
-    background: #b71c1c;
-}
-
-#results {
-    margin-top: 15px;
 }
